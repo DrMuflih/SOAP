@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Case N.H. · Flashcards</title>
+<style>
+:root{--bg:#F1F5F8;--paper:#fff;--ink:#16222E;--muted:#55616C;--navy:#0E4C75;--soft:#DCE8F0;--amber:#A86414;--line:#D3DCE3}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1720;--paper:#17222D;--ink:#E6EDF3;--muted:#A3B0BC;--navy:#8CC0E6;--soft:#1E3346;--amber:#E2A65A;--line:#2A3846}}
+:root[data-theme="dark"]{--bg:#0F1720;--paper:#17222D;--ink:#E6EDF3;--muted:#A3B0BC;--navy:#8CC0E6;--soft:#1E3346;--amber:#E2A65A;--line:#2A3846}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-size:17px;line-height:1.5}
+main{max-width:640px;margin:0 auto;padding:16px}
+.top p{margin:0;color:var(--muted);font-size:15px}
+h1{font-size:22px;margin:0 0 12px;color:var(--navy)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;min-height:360px}
+.tag{font-size:14px;font-weight:700;color:var(--amber);margin:0 0 6px}
+h2{font-size:19px;line-height:1.35;margin:0 0 12px}
+.opt{display:flex;gap:8px;width:100%;text-align:left;font:inherit;color:var(--ink);background:transparent;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;margin:0 0 8px;cursor:pointer;line-height:1.4}
+.opt b{color:var(--navy)}
+.opt.sel{border-color:var(--navy);background:var(--soft)}
+.opt:focus-visible,button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.note{color:var(--muted);font-size:15px;margin:10px 0 0}
+.sec p{margin:0 0 8px}.sec b{color:var(--navy)}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+.nav button{font:inherit;font-weight:600;border:none;border-radius:8px;padding:10px 16px;background:var(--navy);color:var(--paper);cursor:pointer}
+.nav button.ghost{background:transparent;color:var(--navy);border:1.5px solid var(--navy)}
+.nav button:disabled{opacity:.4;cursor:default}
+.dots{display:flex;gap:6px}.dots i{width:8px;height:8px;border-radius:50%;background:var(--line)}.dots i.on{background:var(--navy)}
+</style></head><body><main>
+<div class="top"><p>CLPH 403 · Flashcards</p><h1>Case N.H.: Writing the Plan</h1></div>
+<div class="card" id="card" aria-live="polite"></div>
+<div class="nav"><button class="ghost" id="prev" type="button">← Back</button><div class="dots" id="dots"></div><button id="next" type="button">Next →</button></div>
+</main>
+<script>
+const CARDS=[{"tag": "Choosing the therapy", "q": "Which option is best for N.H.’s blood pressure?", "o": ["Increase amlodipine to 10 mg once daily", "Continue amlodipine 5 mg and add generic lisinopril 10 mg once daily, both in the morning", "Switch to a brand single-pill combination (amlodipine/ARB) once daily", "Stop amlodipine and start hydrochlorothiazide 25 mg once daily"]}, {"tag": "Testing in the plan", "q": "N.H. starts lisinopril 10 mg daily. Which monitoring plan is most appropriate?", "o": ["Lipid panel in 1 week", "Serum potassium and creatinine in 1–2 weeks", "No laboratory tests; recheck BP in 6 months", "A1c in 3 months"]}, {"tag": "A complete plan entry", "q": "Which is the best-written plan entry for N.H.’s hypertension?", "o": ["Change BP medication", "Add lisinopril", "Add lisinopril 10 mg once daily in the morning; check K⁺ and SCr in 1–2 weeks; counsel on dry cough and lip swelling; review BP and edema in 4 weeks", "Consider an ACE inhibitor"]}, {"tag": "Planning for Ramadan", "q": "Last Ramadan, N.H. stopped her BP tablet for the whole month. What is the best plan?", "o": ["Advise her not to fast", "Before Ramadan, agree that she takes both once-daily tablets at the same time each day, at suhoor or iftar", "Tell her to stop both tablets during Ramadan and restart afterwards", "Switch to a three-times-daily regimen"]}, {"tag": "Traceability", "q": "N.H.’s plan includes the items below. Which shows a discrepancy?", "o": ["Add lisinopril 10 mg daily", "Start atorvastatin 20 mg daily", "Start omeprazole 20 mg daily", "Refer to a dietitian"]}, {"tag": "SMART goals", "q": "N.H. has just started lisinopril 10 mg once daily. Which adherence goal, agreed with her, meets all SMART criteria?", "o": ["N.H. will take her lisinopril regularly to control her blood pressure.", "N.H. will take lisinopril 10 mg every morning with breakfast on 7 of 7 days, starting today, and review this at her 4-week visit.", "N.H. will take lisinopril 10 mg every morning without missing a single dose, for life.", "N.H. will take lisinopril 10 mg every morning with breakfast."]}];
+const CASE=[
+'<p class="tag">Card 1 · The case</p><h2>N.H., 58-year-old woman</h2><div class="sec"><p><b>S:</b> School administrator. Referred for BP review. “My ankles swell by the afternoon, and my shoes feel tight.” Amlodipine 5 mg once daily for 1 year. No chest pain or breathlessness. Non-smoker. No known drug allergies.</p><p><b>O:</b> BP 152/94 and 150/92 mmHg (two visits). Bilateral mild pitting ankle edema. LDL 170 mg/dL. 10-year ASCVD risk 12%. SCr 0.8 mg/dL, K⁺ 4.2 mmol/L. BMI 29 kg/m².</p><p><b>A:</b> 1. Hypertension, above goal (goal less than 130/80 mmHg). 2. Ankle edema, likely amlodipine-related. 3. Elevated LDL with intermediate cardiovascular risk; not on a statin.</p></div>',
+'<p class="tag">Card 1 · What the interview revealed</p><div class="sec"><p><b>Goals:</b> “I want to keep working until I retire, and not end up like my mother,” who had a stroke at 64.</p><p><b>Preferences:</b> “I prefer tablets in the morning only. I don’t mind two if they’re cheap.”</p><p><b>Barriers:</b> Pays for her medicines herself, so cost is her biggest concern. Last Ramadan she stopped her BP tablet for the whole month.</p><p><b>Support:</b> Her husband reminds her about appointments.</p><p><b>Readiness:</b> Walking after work 7/10. Cutting salt 3/10 (“my family won’t eat bland food”).</p></div>'];
+const N=CASE.length+CARDS.length;let i=0;const pick={};
+const card=document.getElementById('card'),dots=document.getElementById('dots');
+dots.innerHTML=Array.from({length:N},()=>'<i></i>').join('');
+function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function render(){
+ [...dots.children].forEach((d,k)=>d.classList.toggle('on',k===i));
+ document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===N-1;
+ if(i<CASE.length){card.innerHTML=CASE[i];return}
+ const n=i-CASE.length,c=CARDS[n];
+ card.innerHTML='<p class="tag">Card '+(n+2)+' · '+esc(c.tag)+'</p><h2>'+esc(c.q)+'</h2>'+c.o.map((t,k)=>'<button type="button" class="opt'+(pick[n]===k?' sel':'')+'" aria-pressed="'+(pick[n]===k)+'" data-k="'+k+'"><b>'+'ABCD'[k]+'.</b><span>'+esc(t)+'</span></button>').join('')+'<p class="note">Tap your answer. Be ready to explain your choice in class.</p>';
+ card.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{pick[n]=+b.dataset.k;render()});
+}
+document.getElementById('prev').onclick=()=>{if(i>0){i--;render();window.scrollTo(0,0)}};
+document.getElementById('next').onclick=()=>{if(i<N-1){i++;render();window.scrollTo(0,0)}};
+render();
+</script></body></html>
